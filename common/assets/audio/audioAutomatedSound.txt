@@ -1,0 +1,7 @@
+left.mp3
+center.mp3
+right.mp3
+click.mp3
+question1.mp3
+question2.mp3
+question3.mp3

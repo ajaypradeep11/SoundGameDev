@@ -6,7 +6,9 @@
   1 File(s) copied
   E:\GDP\Media Fun\Project1\Project1\common\fonts\arial.ttf
   1 File(s) copied
-  gl.c
   main.cpp
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(204,36): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(232,36): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(621,34): warning C4305: 'argument': truncation from 'double' to 'float'
 LINK : fatal error C1047: The object or library file 'E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Release\rssgl.lib' was created by a different version of the compiler than other objects like 'x64\Release\gl.obj'; rebuild all objects and libraries with the same compiler
 LINK : fatal error LNK1257: code generation failed

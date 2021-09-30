@@ -7,7 +7,7 @@
   E:\GDP\Media Fun\Project1\Project1\common\fonts\arial.ttf
   1 File(s) copied
   main.cpp
-E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(182,36): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(214,36): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(579,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(207,36): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(235,36): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(625,34): warning C4305: 'argument': truncation from 'double' to 'float'
   Project1.vcxproj -> E:\GDP\Media Fun\Project1\Project1\x64\Debug\Project1.exe

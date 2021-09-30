@@ -1,3 +1,10 @@
+//Guess the beat 
+//3 streaming sounds. Search for "_bgm" will show three places of continuous sounds used
+//8 sampled sounds. Search for "_sampledsound" will show eight places where sampled sounds are used
+//ability to pause and play. Search for "_pauseplay" will show place where it is defined
+//5 sounds where attributes are changed. Search for "_attrib" will show places where they are defined
+//Loaded information from an external file. Search for "_file" will show places where they are defined
+//This a guessing game where people can guess the played beat using options.
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
@@ -85,6 +92,7 @@ bool isLevel3 = false;
 //To check whether the max attempts is 3. if greater than 3, then gameover.
 static int count = 0;
 
+//To get audio from filelist
 std::vector<std::string> _audioList;
 std::vector<std::string> _audioBGM;
 std::vector<std::string> _audioQuestionLevel1;
@@ -94,19 +102,23 @@ std::vector<std::string> _audioGameWonOrLose;
 
 
 //Used to change background color
-float red = 0.2f;
-float blue = 0.2f;
-float green = 0.2f;
+float red = 0.0f;
+float blue = 0.0f;
+float green = 0.0f;
 
 //Function used to replay the options for LEVEL 1
 void callOption() {
 	if (!_isPlaying) {
+		//_sampledsound beats for Level 1
 		_result = _system->playSound(_soundQuestionSound, 0, false, &_channelQuestion);
 		Sleep(1000);
+		//_sampledsound beats for Level 1
 		_result = _system->playSound(_soundQuestion1Sound, 0, false, &_channelQuestion);
 		Sleep(1000);
+		//_sampledsound beats for Level 1
 		_result = _system->playSound(_soundQuestion2Sound, 0, false, &_channelQuestion);
 		Sleep(1000);
+		//_sampledsound beats for Level 1
 		_result = _system->playSound(_soundQuestion3Sound, 0, false, &_channelQuestion);
 		if (_result != FMOD_OK) {
 			fprintf(stderr, "unable to play sound");
@@ -116,10 +128,13 @@ void callOption() {
 
 void callOptionLvl2() {
 	if (!_isPlaying) {
+		//_sampledsound for left side voice
 		_result = _system->playSound(_soundLevel2Left, 0, false, &_channelQuestion);
 		Sleep(1000);
+		//_sampledsound for center voice
 		_result = _system->playSound(_soundLevel2Center, 0, false, &_channelQuestion);
 		Sleep(1000);
+		//_sampledsound for right side voice
 		_result = _system->playSound(_soundLevel2Right, 0, false, &_channelQuestion);
 		if (_result != FMOD_OK) {
 			fprintf(stderr, "unable to play sound");
@@ -129,15 +144,18 @@ void callOptionLvl2() {
 
 void callOptionLvl3() {
 	if (!_isPlaying) {
-
+		//_sampledsound beats for Level 3
 		_result = _system->playSound(_soundLevel3Sound, 0, false, &_channelQuestion3);
+		//_attrib Reverb is changed
 		_channelQuestion3->setReverbProperties(4, 1.0f);
 		
 		Sleep(1000);
 
 		_result = _system->playSound(_soundLevel3Sound, 0, false, &_channelQuestion3);
+		//_attrib LowpassGain is changed
 		_channelQuestion3->setLowPassGain(1.0f);
 		Sleep(1000);
+
 
 		_result = _system->playSound(_soundLevel3Sound, 0, false, &_channelQuestion3);
 		_channelQuestion3->setPitch(2.0);
@@ -146,6 +164,12 @@ void callOptionLvl3() {
 			fprintf(stderr, "unable to play sound");
 		}
 	}
+}
+
+void changeBackground(float r, float g, float b) {
+	red = r;
+	green = g;
+	blue = b;
 }
 
 void incrementAndCheck() {
@@ -162,6 +186,7 @@ void incrementAndCheck() {
 	}
 
 	if (!_isPlaying) {
+		//_sampledsound click sound when option are clicked
 		_result = _system->playSound(_soundClick, 0, false, &_channelQuestion);
 		if (_result != FMOD_OK) {
 			fprintf(stderr, "unable to play sound");
@@ -172,14 +197,15 @@ void incrementAndCheck() {
 			isStartgame = false;
 			isLevel1 = false;
 			isLevel2 = false;
-			red = 0.74f;
-			blue = 0.0f;
-			green = 0.070f;
+			changeBackground(0.341f,0.0f,0.023f);
 			count = 0;
 			_channelStartBgm->stop();
 
+			//_bgm endbgm
 			_result = _system->playSound(_soundEndBgm, 0, false, &_channelStartBgm);
+			//_attrib volume attribute is changed
 			_channelStartBgm->setVolume(0.09);
+			//_sampledsound beats for game lose
 			_result = _system->playSound(_soundGameLost, 0, false, &_channelQuestion);
 			if (_result != FMOD_OK) {
 				fprintf(stderr, "unable to play sound");
@@ -187,12 +213,6 @@ void incrementAndCheck() {
 		}
 	}
 	
-}
-
-void changeBackground(float r, float g, float b) {
-	red = r;
-	green = g;
-	blue = b;
 }
 
 //Keypress callback
@@ -204,11 +224,12 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 
 		//When game is entered, this snippet is called
 		if (!_isGameEntered) {
-			changeBackground(0.5f, 0.5f, 0.5f);
+			changeBackground(0.15f, 0.15f, 0.15f);
 			_isGameEntered = true;
 			isStartgame = true;
 			_channelStartBgm->stop();
 
+			//_bgm midbgm
 			//_soundMidBgm is called as that is the bgm for level1
 			_result = _system->playSound(_soundMidBgm, 0, false, &_channelStartBgm);
 			_channelStartBgm->setVolume(0.09);
@@ -242,6 +263,7 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 			_channelQuestion2->isPlaying(&_isPlaying);
 			if (!_isPlaying) {
 				_result = _system->playSound(_soundLevel2Sound, 0, false, &_channelQuestion2);
+				//_attrib balance is changed. Left/Right
 				_channelQuestion2->setPan(1);
 				if (_result != FMOD_OK) {
 					fprintf(stderr, "unable to play sound");
@@ -251,8 +273,8 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 		else if(isLevel2) {
 			_channelQuestion3->isPlaying(&_isPlaying);
 			if (!_isPlaying) {
-
 				_result = _system->playSound(_soundLevel3Sound, 0, false, &_channelQuestion3);
+				//_attrib Pitch is changed
 				_channelQuestion3->setPitch(2.0);
 				if (_result != FMOD_OK) {
 					fprintf(stderr, "unable to play sound");
@@ -281,16 +303,16 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 
 	//pause background music we have three bgm. Initial bgm, game start bgm and game lost bgm.
 	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
-		
+		//_pauseplay pause and play used
 		if (_channelStartBgm) {
 			_result = _channelStartBgm->getPaused(&_isPaused);
 			_result = _channelStartBgm->setPaused(!_isPaused);
 			_result = _channelStartBgm->getPaused(&_isPaused);
 		}
 	}
-
+	
 	//Level 1,2 and 3 answer options
-	else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+	else if (((key == GLFW_KEY_1)||(key== GLFW_KEY_KP_1))&& action == GLFW_PRESS) {
 		if (isStartgame) {
 			incrementAndCheck();
 		}		
@@ -301,13 +323,14 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 			incrementAndCheck();
 		}
 	}
-	else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+	else if (((key == GLFW_KEY_2)||(key == GLFW_KEY_KP_2)) && action == GLFW_PRESS) {
 		if (isStartgame) {
 			_channelQuestion->isPlaying(&_isPlaying);
 			if (!_isPlaying) {
+				//Level 1 passed
 				isLevel1 = true;
 				isStartgame = false;
-				changeBackground(0.8f, 0.8f, 0.8f);
+				changeBackground(0.360f, 0.227f, 0.0f);
 				_result = _system->playSound(_soundQuestion2, 0, false, &_channelQuestion2);
 				if (_result != FMOD_OK) {
 					fprintf(stderr, "unable to play sound");
@@ -322,16 +345,17 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 			incrementAndCheck();
 		}
 	}
-	else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+	else if (((key == GLFW_KEY_3)||(key == GLFW_KEY_KP_3)) && action == GLFW_PRESS) {
 		if (isStartgame) {
 			incrementAndCheck();
 		}		
 		else if (isLevel1) {
 			_channelQuestion2->isPlaying(&_isPlaying);
 			if (!_isPlaying) {
+				//Level 2 passed
 				isLevel2 = true;
 				isLevel1 = false;
-				changeBackground(0.3f, 0.3f, 0.3f);
+				changeBackground(0.074f, 0.0f, 0.360f);
 				count = 0;
 				_result = _system->playSound(_soundQuestion3, 0, false, &_channelQuestion3);
 				if (_result != FMOD_OK) {
@@ -343,10 +367,12 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 		else if (isLevel2) {
 			_channelQuestion3->isPlaying(&_isPlaying);
 			if (!_isPlaying) {
+				//Level 3 passed
 				isLevel3 = true;
 				isLevel2 = false;
-				changeBackground(0.0f, 0.0f,0.6f);
+				changeBackground(0.0f, 0.239f, 0.066f);
 				count = 0;
+				//_sampledsound beats for game won
 				_result = _system->playSound(_soundGameWon, 0, false, &_channelQuestion3);
 				if (_result != FMOD_OK) {
 					fprintf(stderr, "unable to play sound");
@@ -355,7 +381,7 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 			count = 0;
 		}
 	}
-	else if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+	else if (((key == GLFW_KEY_4) || (key == GLFW_KEY_KP_4)) && action == GLFW_PRESS) {
 		if (isStartgame) {
 			incrementAndCheck();
 		}
@@ -372,8 +398,11 @@ bool initGLFW();
 bool initGL();
 bool initFMOD();
 void shutdown();
+void releaseAllSound();
+void shutdownSound(FMOD::Sound* _soundToRelease);
 
 
+//to get sound from file
 std::vector<std::string> getSoundFromFile(std::string fileName);
 
 
@@ -386,9 +415,6 @@ int main(int args, char* argv) {
 	}
 
 	GLuint lastKnownRowIndex = _textRowIndex;
-	GLuint currentSoundLength = 0;
-
-	FMOD::Sound* currentSound = nullptr;
 
 	//Main loop
 	while (!glfwWindowShouldClose(_window)) {
@@ -399,29 +425,39 @@ int main(int args, char* argv) {
 		lastKnownRowIndex = _textRowIndex;
 
 		//Initial starting game
-		_text->addLine("Enter to start the game", lastKnownRowIndex++);
+		_text->addLine("Press \"Enter\" to start the game", lastKnownRowIndex++);
+		_text->addLine("CONTROLS", lastKnownRowIndex + 15);
+		_text->addLine("ENTER - to start the game", lastKnownRowIndex + 16);
+		_text->addLine("Q - Replay the given beat", lastKnownRowIndex + 17);
+		_text->addLine("R - Replay the given beat options", lastKnownRowIndex + 18);
+		_text->addLine("TAB - Pause/Play background music", lastKnownRowIndex + 19);
+		_text->addLine("ESC - To Quit the game", lastKnownRowIndex + 20);
+		_text->addLine("1, 2, 3, 4 - Options to guess the beat", lastKnownRowIndex + 21);
 
 		//LEVEL 1
 		if (isStartgame) {
 			_text->addLine("LEVEL 1", lastKnownRowIndex++);
-			_text->addLine("Identify the sound played. You have 4 option to answer. Press Q to hear the given beat. Press R to hear 4 options of sound. Click 1,2,3 and 4 to select the options.", lastKnownRowIndex++);
+			_text->addLine("Identify the sound played. You have 4 option to answer. Press Q to hear the given beat. Press R to hear 4 options of sound. Click 1,2,3 or 4 to select the options. You have 3 attempts to answer", lastKnownRowIndex++);
 		}
 		//LEVEL 2
 		else if (isLevel1) {
 			_text->addLine("LEVEL 2", lastKnownRowIndex);
-			_text->addLine("Identify which side the sound played. You have 3 option to answer. Press Q to hear the given beat. Press R to hear 3 options of sound, Click 1,2 or 3 to select the options.", ++lastKnownRowIndex);
+			_text->addLine("Identify which side the sound played. You have 3 option to answer. Press Q to hear the given beat. Press R to hear 3 options of sound. Click 1,2 or 3 to select the options. You have 3 attempts to answer", ++lastKnownRowIndex);
 
 		}
 		//LEVEL 3
 		else if (isLevel2) {
 			_text->addLine("LEVEL 3", lastKnownRowIndex);
-			_text->addLine("Press Q to play the sound. Press R to hear 3 variations of the sound. Which did it match? Click 1,2 or 3  ", ++lastKnownRowIndex);
+			_text->addLine("Identify the matching sound. You have 3 option to answer. Press Q to play the sound. Press R to hear 3 variations of the sound. Which did it match? Click 1,2 or 3. You have 3 attempts to answer ", ++lastKnownRowIndex);
 
 		}
 		//Game won
 		else if (isLevel3) {
 			_text->addLine("CONGRATULATIONS!", lastKnownRowIndex);
 			_text->addLine("Looks like we have a winner with a keen ear! Press Esc to Exit. ", ++lastKnownRowIndex);
+			_text->addLine("END CREDITS", lastKnownRowIndex + 5);
+			_text->addLine("Pradeep & Dennison", lastKnownRowIndex + 6);
+
 
 		}
 		if (isEndgame) {
@@ -429,6 +465,8 @@ int main(int args, char* argv) {
 			_text->addLine("You Lose", lastKnownRowIndex);
 			_text->addLine("Press Esc to quit. Relaunch to try again.", ++lastKnownRowIndex);
 			_text->addLine(" ", ++lastKnownRowIndex);
+			_text->addLine("END CREDITS", lastKnownRowIndex + 5);
+			_text->addLine("Pradeep & Dennison", lastKnownRowIndex + 6);
 		}
 		_text->render();
 		glfwSwapBuffers(_window);
@@ -511,6 +549,7 @@ bool initFMOD() {
 	_audioBGM = getSoundFromFile("audioBGM.txt");
 	std::stringstream bgm[4];
 	for (int i = 0; i < _audioBGM.size(); i++) {
+		//_file using external
 		bgm[i] << SOLUTION_DIR << "common\\assets\\audio\\" << _audioBGM.at(i);
 	}
 	_result = _system->createSound(bgm[0].str().c_str(), FMOD_LOOP_NORMAL, 0, &_soundStartBgm);
@@ -523,6 +562,7 @@ bool initFMOD() {
 	_audioQuestionLevel1 = getSoundFromFile("audioQuestionLevel1.txt");
 	std::stringstream questionsLevel1[4];
 	for (int i = 0; i < _audioQuestionLevel1.size(); i++) {
+		//_file using external
 		questionsLevel1[i] << SOLUTION_DIR << "common\\assets\\audio\\" << _audioQuestionLevel1.at(i);
 	}
 	_result = _system->createSound(questionsLevel1[0].str().c_str(), FMOD_LOOP_OFF, 0, &_soundQuestionSound);
@@ -537,6 +577,7 @@ bool initFMOD() {
 	_audioQuestionLevel2and3 = getSoundFromFile("audioQuestionLevel2and3.txt");
 	std::stringstream questionLevel2and3[2];
 	for (int i = 0; i < _audioQuestionLevel2and3.size(); i++) {
+		//_file using external
 		questionLevel2and3[i] << SOLUTION_DIR << "common\\assets\\audio\\" << _audioQuestionLevel2and3.at(i);
 	}
 	_result = _system->createSound(questionLevel2and3[0].str().c_str(), FMOD_LOOP_OFF, 0, &_soundLevel2Sound);
@@ -549,6 +590,7 @@ bool initFMOD() {
 	_audioAutomatedSound = getSoundFromFile("audioAutomatedSound.txt");
 	std::stringstream audioAutomatedSound[7];
 	for (int i = 0; i < _audioAutomatedSound.size(); i++) {
+		//_file using external
 		audioAutomatedSound[i] << SOLUTION_DIR << "common\\assets\\audio\\" << _audioAutomatedSound.at(i);
 	}
 	_result = _system->createSound(audioAutomatedSound[0].str().c_str(), FMOD_LOOP_OFF, 0, &_soundLevel2Left);
@@ -567,13 +609,17 @@ bool initFMOD() {
 	_audioGameWonOrLose = getSoundFromFile("audioGameWonOrLose.txt");
 	std::stringstream audioGameWonOrLose[2];
 	for (int i = 0; i < _audioGameWonOrLose.size(); i++) {
+		//_file using external
 		audioGameWonOrLose[i] << SOLUTION_DIR << "common\\assets\\audio\\" << _audioGameWonOrLose.at(i);
 	}
 	_result = _system->createSound(audioGameWonOrLose[1].str().c_str(), FMOD_LOOP_OFF, 0, &_soundGameLost);
 	_result = _system->createSound(audioGameWonOrLose[0].str().c_str(), FMOD_LOOP_OFF, 0, &_soundGameWon);
 	/*Game win or lose ends*/
-	
 
+
+
+
+	//_bgm startbgm
 	//Initial Play start BGm
 	_result = _system->playSound(_soundStartBgm, 0, false, &_channelStartBgm);
 	_channelStartBgm->setVolume(0.09);
@@ -589,10 +635,9 @@ bool initFMOD() {
 void shutdown() {
 	glfwTerminate();
 
-	/*_result = _sound->release();
-	if (_result != FMOD_OK) {
-		fprintf(stderr, "Unable to release sound");
-	}*/
+	//single function to release all sound
+	releaseAllSound();
+
 	_result = _system->close();
 	if (_result != FMOD_OK) {
 		fprintf(stderr, "Unable to close system");
@@ -609,6 +654,34 @@ void shutdown() {
 	}
 
 	exit(EXIT_SUCCESS);
+}
+
+void releaseAllSound() {
+	shutdownSound(_soundClick);
+	shutdownSound(_soundEndBgm);
+	shutdownSound(_soundGameLost);
+	shutdownSound(_soundGameWon);
+	shutdownSound(_soundLevel2Center);
+	shutdownSound(_soundLevel2Left);
+	shutdownSound(_soundLevel2Right);
+	shutdownSound(_soundLevel2Sound);
+	shutdownSound(_soundLevel3Sound);
+	shutdownSound(_soundMidBgm);
+	shutdownSound(_soundQuestion1);
+	shutdownSound(_soundQuestion1Sound);
+	shutdownSound(_soundQuestion2);
+	shutdownSound(_soundQuestion2Sound);
+	shutdownSound(_soundQuestion3);
+	shutdownSound(_soundQuestion3Sound);
+	shutdownSound(_soundQuestionSound);
+	shutdownSound(_soundStartBgm);
+}
+
+void shutdownSound(FMOD::Sound* _soundToRelease) {
+	_result = _soundToRelease->release();
+	if (_result != FMOD_OK) {
+		fprintf(stderr, "Unable to release sound");
+	}
 }
 
 //Readfile and get the path

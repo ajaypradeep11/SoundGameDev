@@ -1,0 +1,14 @@
+bgm.mp3
+bgm1.mp3
+bgm2.mp3
+bleep1.wav
+bleep2.wav
+bleep3.wav
+bleep4.wav
+question1.mp3
+gameover.mp3
+click.mp3
+beep.wav
+left.mp3
+center.mp3
+right.mp3

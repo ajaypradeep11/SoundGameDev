@@ -1,0 +1,12 @@
+﻿  E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Debug\fmod.dll
+  E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Debug\freetype.dll
+  E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Debug\glfw3.dll
+  3 File(s) copied
+  E:\GDP\Media Fun\Project1\Project1\common\fonts\arial.ttf
+  1 File(s) copied
+  E:\GDP\Media Fun\Project1\Project1\common\fonts\arial.ttf
+  1 File(s) copied
+  main.cpp
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(141,36): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GDP\Media Fun\Project1\Project1\Project1\main.cpp(393,34): warning C4305: 'argument': truncation from 'double' to 'float'
+  Project1.vcxproj -> E:\GDP\Media Fun\Project1\Project1\x64\Debug\Project1.exe

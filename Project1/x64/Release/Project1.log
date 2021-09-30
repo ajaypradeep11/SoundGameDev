@@ -1,0 +1,12 @@
+﻿  E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Release\fmod.dll
+  E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Release\freetype.dll
+  E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Release\glfw3.dll
+  3 File(s) copied
+  E:\GDP\Media Fun\Project1\Project1\common\fonts\arial.ttf
+  1 File(s) copied
+  E:\GDP\Media Fun\Project1\Project1\common\fonts\arial.ttf
+  1 File(s) copied
+  gl.c
+  main.cpp
+LINK : fatal error C1047: The object or library file 'E:\GDP\Media Fun\Project1\Project1\common\lib\x64\Release\rssgl.lib' was created by a different version of the compiler than other objects like 'x64\Release\gl.obj'; rebuild all objects and libraries with the same compiler
+LINK : fatal error LNK1257: code generation failed
